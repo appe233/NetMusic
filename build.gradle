@@ -17,7 +17,7 @@ apply plugin: 'eclipse'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 
-version = '1.1.1'
+version = '1.1.2'
 group = 'com.github.tartaricacid'
 archivesBaseName = 'netmusic-1.18.2'
 
@@ -25,13 +25,27 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     mappings channel: 'parchment', version: '2022.11.06-1.18.2'
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
-            workingDirectory project.file('run')
+            jvmArgs "-XX:+AllowEnhancedClassRedefinition"
+            workingDirectory project.file('run/client_a')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'netmusic'
+            property 'fml.earlyprogresswindow', 'false'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                netmusic {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client2 {
+            parent minecraft.runs.client
+            workingDirectory project.file('run/client_b')
+            args '--username', 'tartaric_acid'
             mods {
                 netmusic {
                     source sourceSets.main
@@ -40,22 +54,13 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            jvmArgs "-XX:+AllowEnhancedClassRedefinition"
+            workingDirectory project.file('run/server')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'netmusic'
-            mods {
-                netmusic {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'netmusic'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 netmusic {
                     source sourceSets.main
@@ -64,9 +69,11 @@ minecraft {
         }
 
         data {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/data')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             args '--mod', 'netmusic', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
                 netmusic {
@@ -79,9 +86,39 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+repositories {
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 Maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "Mod Maven"
+        url = "https://modmaven.k-4u.nl"
+    }
+    maven {
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
     minecraftLibrary 'com.googlecode.soundlibs:mp3spi:1.9.5.4'
+
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.194:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.194")
+
+    implementation fg.deobf("curse.maven:touhou-little-maid-355044:4968575")
+    //implementation fg.deobf("curse.maven:touhou-little-maid-355044:5246894")
+
+    runtimeOnly "curse.maven:kotlin-for-forge-351264:4439494"
+    runtimeOnly fg.deobf("curse.maven:libipn-679177:4870129")
+    implementation fg.deobf("curse.maven:inventory-profiles-next-495267:4813454")
 }
 
 tasks.withType(JavaCompile).configureEach {

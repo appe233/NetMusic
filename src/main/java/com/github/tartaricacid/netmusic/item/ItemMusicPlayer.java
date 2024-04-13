@@ -28,5 +28,4 @@ public class ItemMusicPlayer extends BlockItem {
             }
         });
     }
-
 }
