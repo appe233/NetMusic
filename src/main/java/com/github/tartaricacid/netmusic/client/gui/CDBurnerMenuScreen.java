@@ -11,27 +11,33 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import org.anti_ad.mc.ipn.api.IPNIgnore;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@IPNIgnore
 public class CDBurnerMenuScreen extends AbstractContainerScreen<CDBurnerMenu> {
     private static final ResourceLocation BG = new ResourceLocation(NetMusic.MOD_ID, "textures/gui/cd_burner.png");
     private static final Pattern ID_REG = Pattern.compile("^\\d{4,}$");
     private static final Pattern URL_1_REG = Pattern.compile("^https://music\\.163\\.com/song\\?id=(\\d+).*$");
     private static final Pattern URL_2_REG = Pattern.compile("^https://music\\.163\\.com/#/song\\?id=(\\d+).*$");
     private EditBox textField;
+    private Checkbox readOnlyButton;
     private Component tips = Component.empty();
 
     public CDBurnerMenuScreen(CDBurnerMenu screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
+        this.imageHeight = 176;
     }
 
     @Override
@@ -71,11 +77,24 @@ public class CDBurnerMenuScreen extends AbstractContainerScreen<CDBurnerMenu> {
         textField.setFocus(focus);
         textField.moveCursorToEnd();
         this.addWidget(this.textField);
-        this.addRenderableWidget(new Button(leftPos + 7, topPos + 33, 135, 20,
+
+        this.readOnlyButton = new Checkbox(leftPos + 66, topPos + 34, 80, 20, Component.translatable("gui.netmusic.cd_burner.read_only"), false);
+        this.addRenderableWidget(this.readOnlyButton);
+        this.addRenderableWidget(new Button(leftPos + 7, topPos + 34, 55, 20,
                 Component.translatable("gui.netmusic.cd_burner.craft"), (b) -> handleCraftButton()));
     }
 
     private void handleCraftButton() {
+        ItemStack cd = this.getMenu().getInput().getStackInSlot(0);
+        if (cd.isEmpty()) {
+            this.tips = Component.translatable("gui.netmusic.cd_burner.cd_is_empty");
+            return;
+        }
+        ItemMusicCD.SongInfo songInfo = ItemMusicCD.getSongInfo(cd);
+        if (songInfo != null && songInfo.readOnly) {
+            this.tips = Component.translatable("gui.netmusic.cd_burner.cd_read_only");
+            return;
+        }
         if (StringUtils.isBlank(textField.getValue())) {
             this.tips = Component.translatable("gui.netmusic.cd_burner.no_music_id");
             return;
@@ -84,6 +103,7 @@ public class CDBurnerMenuScreen extends AbstractContainerScreen<CDBurnerMenu> {
             long id = Long.parseLong(textField.getValue());
             try {
                 ItemMusicCD.SongInfo song = MusicListManage.get163Song(id);
+                song.readOnly = this.readOnlyButton.selected();
                 NetworkHandler.CHANNEL.sendToServer(new SetMusicIDMessage(song));
             } catch (Exception e) {
                 this.tips = Component.translatable("gui.netmusic.cd_burner.get_info_error");
@@ -99,25 +119,25 @@ public class CDBurnerMenuScreen extends AbstractContainerScreen<CDBurnerMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pX, int pY) {
-        renderBackground(pPoseStack);
+    protected void renderBg(PoseStack poseStack, float partialTicks, int x, int y) {
+        renderBackground(poseStack);
         int posX = this.leftPos;
         int posY = (this.height - this.imageHeight) / 2;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BG);
-        blit(pPoseStack, posX, posY, 0, 0, this.imageWidth, this.imageHeight);
+        blit(poseStack, posX, posY, 0, 0, this.imageWidth, this.imageHeight);
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTicks);
-        textField.render(pPoseStack, pMouseX, pMouseY, pPartialTicks);
+    public void render(PoseStack poseStack, int x, int y, float partialTicks) {
+        super.render(poseStack, x, y, partialTicks);
+        textField.render(poseStack, x, y, partialTicks);
         if (StringUtils.isBlank(textField.getValue()) && !textField.isFocused()) {
-            drawString(pPoseStack, font, Component.translatable("gui.netmusic.cd_burner.id.tips").withStyle(ChatFormatting.ITALIC), this.leftPos + 12, this.topPos + 18, ChatFormatting.GRAY.getColor());
+            drawString(poseStack, font, Component.translatable("gui.netmusic.cd_burner.id.tips").withStyle(ChatFormatting.ITALIC), this.leftPos + 12, this.topPos + 18, ChatFormatting.GRAY.getColor());
         }
-        font.drawWordWrap(tips, this.leftPos + 8, this.topPos + 55, 135, 0xCF0000);
-        renderTooltip(pPoseStack, pMouseX, pMouseY);
+        font.drawWordWrap(tips, this.leftPos + 8, this.topPos + 57, 135, 0xCF0000);
+        renderTooltip(poseStack, x, y);
     }
 
     @Override
