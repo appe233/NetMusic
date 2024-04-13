@@ -40,15 +40,15 @@ public class CDBurnerMenu extends Container {
         super(TYPE, id);
 
         this.addSlot(new SlotItemHandler(input, 0, 147, 14));
-        this.addSlot(new SlotItemHandler(output, 0, 147, 57));
+        this.addSlot(new SlotItemHandler(output, 0, 147, 67));
 
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(inventory, i, 8 + i * 18, 152));
         }
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 94 + i * 18));
             }
         }
     }
@@ -83,6 +83,7 @@ public class CDBurnerMenu extends Container {
         return true;
     }
 
+    @Override
     public void removed(PlayerEntity player) {
         super.removed(player);
         ItemHandlerHelper.giveItemToPlayer(player, input.getStackInSlot(0));
@@ -93,8 +94,15 @@ public class CDBurnerMenu extends Container {
         this.songInfo = setSongInfo;
         if (!this.input.getStackInSlot(0).isEmpty() && this.output.getStackInSlot(0).isEmpty()) {
             ItemStack itemStack = this.input.extractItem(0, 1, false);
-            ItemMusicCD.setSongInfo(this.songInfo, itemStack);
+            ItemMusicCD.SongInfo rawSongInfo = ItemMusicCD.getSongInfo(itemStack);
+            if (rawSongInfo == null || !rawSongInfo.readOnly) {
+                ItemMusicCD.setSongInfo(this.songInfo, itemStack);
+            }
             this.output.setStackInSlot(0, itemStack);
         }
+    }
+
+    public ItemStackHandler getInput() {
+        return input;
     }
 }

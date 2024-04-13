@@ -1,8 +1,8 @@
 package com.github.tartaricacid.netmusic.client.event;
 
 import com.github.tartaricacid.netmusic.NetMusic;
+import com.github.tartaricacid.netmusic.api.IUrlSound;
 import com.github.tartaricacid.netmusic.client.audio.Mp3AudioStream;
-import com.github.tartaricacid.netmusic.client.audio.NetMusicSound;
 import net.minecraft.client.audio.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -27,8 +27,8 @@ public class PlayNetMusicEvent {
     @SubscribeEvent
     public static void onSoundPlay(PlaySoundEvent event) {
         ISound sound = event.getSound();
-        if (sound instanceof NetMusicSound) {
-            URL songUrl = ((NetMusicSound) sound).getSongUrl();
+        if (sound instanceof IUrlSound) {
+            URL songUrl = ((IUrlSound) sound).getSongUrl();
             play(sound, event.getManager(), songUrl);
             event.setResultSound(null);
         }

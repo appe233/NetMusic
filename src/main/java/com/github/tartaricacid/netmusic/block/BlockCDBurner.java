@@ -4,10 +4,12 @@ package com.github.tartaricacid.netmusic.block;
 import com.github.tartaricacid.netmusic.inventory.CDBurnerMenu;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -16,11 +18,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockCDBurner extends HorizontalBlock {
     protected static final VoxelShape BLOCK_AABB = Block.box(0, 0, 0, 16, 8, 16);
@@ -60,5 +66,10 @@ public class BlockCDBurner extends HorizontalBlock {
     @Override
     public INamedContainerProvider getMenuProvider(BlockState blockState, World worldIn, BlockPos blockPos) {
         return new SimpleNamedContainerProvider((id, inventory, player) -> new CDBurnerMenu(id, inventory), new StringTextComponent("cd_burner"));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader level, List<ITextComponent> tooltip, ITooltipFlag flag) {
+        tooltip.add(new TranslationTextComponent("block.netmusic.cd_burner.desc").withStyle(TextFormatting.GRAY));
     }
 }

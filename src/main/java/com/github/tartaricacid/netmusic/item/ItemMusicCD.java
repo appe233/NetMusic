@@ -15,10 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.StringUtils;
@@ -77,6 +74,10 @@ public class ItemMusicCD extends Item {
             if (info.vip) {
                 name = name + " §4§l[VIP]";
             }
+            if (info.readOnly) {
+                IFormattableTextComponent readOnlyText = new TranslationTextComponent("tooltips.netmusic.cd.read_only").withStyle(TextFormatting.YELLOW);
+                return new StringTextComponent(name).append(StringUtils.SPACE).append(readOnlyText);
+            }
             return new StringTextComponent(name);
         }
         return super.getName(stack);
@@ -123,8 +124,17 @@ public class ItemMusicCD extends Item {
         public String transName = StringUtils.EMPTY;
         @SerializedName("vip")
         public boolean vip = false;
+        @SerializedName("read_only")
+        public boolean readOnly = false;
         @SerializedName("artists")
         public List<String> artists = Lists.newArrayList();
+
+        public SongInfo(String songUrl, String songName, int songTime, boolean readOnly) {
+            this.songUrl = songUrl;
+            this.songName = songName;
+            this.songTime = songTime;
+            this.readOnly = readOnly;
+        }
 
         public SongInfo(NetEaseMusicSong pojo) {
             NetEaseMusicSong.Song song = pojo.getSong();
@@ -157,6 +167,9 @@ public class ItemMusicCD extends Item {
             if (tag.contains("vip", Constants.NBT.TAG_BYTE)) {
                 this.vip = tag.getBoolean("vip");
             }
+            if (tag.contains("read_only", Constants.NBT.TAG_BYTE)) {
+                this.readOnly = tag.getBoolean("read_only");
+            }
             if (tag.contains("artists", Constants.NBT.TAG_LIST)) {
                 ListNBT tagList = tag.getList("artists", Constants.NBT.TAG_STRING);
                 this.artists = Lists.newArrayList();
@@ -176,6 +189,7 @@ public class ItemMusicCD extends Item {
                 tag.putString("trans_name", info.transName);
             }
             tag.putBoolean("vip", info.vip);
+            tag.putBoolean("read_only", info.readOnly);
             if (info.artists != null && !info.artists.isEmpty()) {
                 ListNBT nbt = new ListNBT();
                 info.artists.forEach(name -> nbt.add(StringNBT.valueOf(name)));

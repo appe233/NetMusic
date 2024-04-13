@@ -1,5 +1,6 @@
 package com.github.tartaricacid.netmusic.client.audio;
 
+import com.github.tartaricacid.netmusic.api.IUrlSound;
 import com.github.tartaricacid.netmusic.init.InitSounds;
 import com.github.tartaricacid.netmusic.tileentity.TileEntityMusicPlayer;
 import net.minecraft.client.Minecraft;
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
 
 import java.net.URL;
 
-public class NetMusicSound extends TickableSound {
+public class NetMusicSound extends TickableSound implements IUrlSound {
     private final URL songUrl;
     private final int tickTimes;
     private final BlockPos pos;
@@ -62,6 +63,7 @@ public class NetMusicSound extends TickableSound {
         }
     }
 
+    @Override
     public URL getSongUrl() {
         return songUrl;
     }
