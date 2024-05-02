@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.CheckboxButton;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -228,6 +229,18 @@ public class ComputerMenuScreen extends ContainerScreen<ComputerMenu> {
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        InputMappings.Input mouseKey = InputMappings.getKey(keyCode, scanCode);
+        // 防止 E 键关闭界面
+        if (this.getMinecraft().options.keyInventory.isActiveAndMatches(mouseKey)) {
+            if (urlTextField.isFocused() || nameTextField.isFocused() || timeTextField.isFocused()) {
+                return true;
+            }
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
