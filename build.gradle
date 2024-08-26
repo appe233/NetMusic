@@ -36,6 +36,7 @@ base {
 // 需要 Java 21 版本
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+// accessTransformers，注意 1.21 已经不再使用 srg 了
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
 // 运行部分
@@ -113,7 +114,15 @@ dependencies {
     runtimeOnly "maven.modrinth:kotlin-for-forge:5.4.0"
     runtimeOnly "maven.modrinth:libipn:neoforge-1.21-6.0.2"
     implementation "maven.modrinth:inventory-profiles-next:neoforge-1.21-2.0.4"
+
+    // mp3 播放库，需要 jarInJar 进去
+    jarJar "com.googlecode.soundlibs:mp3spi:1.9.5.4"
+    jarJar "com.googlecode.soundlibs:jlayer:1.0.1.4"
+    jarJar "com.googlecode.soundlibs:tritonus-share:0.3.7.4"
 }
+
+// 启用 jarJar
+jarJar.enable()
 
 // 用于 neoforge.mods 里替换那一堆 ${xxxx}
 tasks.withType(ProcessResources).configureEach {

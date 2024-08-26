@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemMusicCD extends Item {
     public static final String SONG_INFO_TAG = "NetMusicSongInfo";
@@ -178,6 +179,27 @@ public class ItemMusicCD extends Item {
             this.transName = track.getTransName();
             this.vip = track.needVip();
             this.artists = track.getArtists();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            } else if (!(obj instanceof SongInfo other)) {
+                return false;
+            } else {
+                return Objects.equals(songUrl, other.songUrl)
+                        && Objects.equals(songName, other.songName)
+                        && Objects.equals(songTime, other.songTime)
+                        && Objects.equals(transName, other.transName)
+                        && Objects.equals(vip, other.vip)
+                        && Objects.equals(artists, other.artists);
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(songUrl, songName, songTime, transName, vip, artists);
         }
     }
 }

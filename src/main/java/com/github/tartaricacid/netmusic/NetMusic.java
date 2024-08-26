@@ -3,12 +3,8 @@ package com.github.tartaricacid.netmusic;
 import com.github.tartaricacid.netmusic.api.NetEaseMusic;
 import com.github.tartaricacid.netmusic.api.WebApi;
 import com.github.tartaricacid.netmusic.config.GeneralConfig;
-import com.github.tartaricacid.netmusic.init.InitBlocks;
-import com.github.tartaricacid.netmusic.init.InitContainer;
-import com.github.tartaricacid.netmusic.init.InitItems;
-import com.github.tartaricacid.netmusic.init.InitSounds;
-import com.github.tartaricacid.touhoulittlemaid.init.InitCapabilities;
-import com.github.tartaricacid.touhoulittlemaid.network.NetworkHandler;
+import com.github.tartaricacid.netmusic.init.*;
+import com.github.tartaricacid.netmusic.network.NetworkHandler;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -30,6 +26,7 @@ public class NetMusic {
         InitItems.TABS.register(modEventBus);
         InitSounds.SOUND_EVENTS.register(modEventBus);
         InitContainer.CONTAINER_TYPE.register(modEventBus);
+        InitDataComponent.DATA_COMPONENTS.register(modEventBus);
 
         modEventBus.addListener(NetworkHandler::registerPacket);
         modEventBus.addListener(InitCapabilities::registerGenericItemHandlers);

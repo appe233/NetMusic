@@ -59,7 +59,7 @@ public class MusicPlayerRenderer implements BlockEntityRenderer<TileEntityMusicP
         }
         matrixStack.mulPose(Axis.ZP.rotationDegrees(180));
         VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
-        MODEL.renderToBuffer(matrixStack, vertexBuilder, combinedLight, OverlayTexture.NO_OVERLAY, 0x26ffffff);
+        MODEL.renderToBuffer(matrixStack, vertexBuilder, combinedLight, OverlayTexture.NO_OVERLAY, 0xffffffff);
         matrixStack.popPose();
     }
 }

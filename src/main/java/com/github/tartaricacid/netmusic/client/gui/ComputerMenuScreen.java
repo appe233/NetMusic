@@ -166,7 +166,6 @@ public class ComputerMenuScreen extends AbstractContainerScreen<ComputerMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int x, int y) {
-        renderBackground(graphics, x, y, partialTicks);
         int posX = this.leftPos;
         int posY = (this.height - this.imageHeight) / 2;
         graphics.blit(BG, posX, posY, 0, 0, this.imageWidth, this.imageHeight);
