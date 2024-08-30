@@ -6,7 +6,6 @@ import com.github.tartaricacid.netmusic.client.audio.NetMusicSound;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -31,17 +30,6 @@ public class MusicToClientMessage implements CustomPacketPayload {
         this.url = url;
         this.timeSecond = timeSecond;
         this.songName = songName;
-    }
-
-    public static MusicToClientMessage decode(FriendlyByteBuf buf) {
-        return new MusicToClientMessage(BlockPos.of(buf.readLong()), buf.readUtf(), buf.readInt(), buf.readUtf());
-    }
-
-    public static void encode(MusicToClientMessage message, FriendlyByteBuf buf) {
-        buf.writeLong(message.pos.asLong());
-        buf.writeUtf(message.url);
-        buf.writeInt(message.timeSecond);
-        buf.writeUtf(message.songName);
     }
 
     public BlockPos getPos() {
