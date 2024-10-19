@@ -48,7 +48,7 @@ public class Mp3AudioStream implements AudioStream {
     }
 
     @Override
-    public ByteBuffer getBuffer(int size) {
+    public ByteBuffer read(int size) {
         ByteBuffer byteBuffer = BufferUtils.createByteBuffer(size);
         if (array.length >= offset + size) {
             byteBuffer.put(array, offset, size);

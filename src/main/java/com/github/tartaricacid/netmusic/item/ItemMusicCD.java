@@ -2,40 +2,38 @@ package com.github.tartaricacid.netmusic.item;
 
 import com.github.tartaricacid.netmusic.api.pojo.NetEaseMusicList;
 import com.github.tartaricacid.netmusic.api.pojo.NetEaseMusicSong;
-import com.github.tartaricacid.netmusic.constants.NetworkingConst;
+import com.github.tartaricacid.netmusic.init.InitDataComponent;
 import com.github.tartaricacid.netmusic.init.InitItems;
-import com.github.tartaricacid.netmusic.networking.message.MusicToClientMessage;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Language;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author : IMG
  * @create : 2024/10/2
  */
 public class ItemMusicCD extends Item {
-    public static final String SONG_INFO_TAG = "NetMusicSongInfo";
 
     public ItemMusicCD(Settings settings) {
         super(settings);
@@ -43,22 +41,14 @@ public class ItemMusicCD extends Item {
 
     public static SongInfo getSongInfo(ItemStack stack) {
         if (stack.getItem() == InitItems.MUSIC_CD) {
-            NbtCompound tag = stack.getOrCreateNbt();
-            if (tag != null && tag.contains(SONG_INFO_TAG, NbtElement.COMPOUND_TYPE)) {
-                NbtCompound infoTag = tag.getCompound(SONG_INFO_TAG);
-                return SongInfo.deserializeNBT(infoTag);
-            }
+            return stack.get(InitDataComponent.SONG_INFO);
         }
         return null;
     }
 
     public static ItemStack setSongInfo(SongInfo info, ItemStack stack) {
         if (stack.getItem() == InitItems.MUSIC_CD) {
-            NbtCompound tag = stack.getOrCreateNbt();
-            NbtCompound songInfoTag = new NbtCompound();
-            SongInfo.serializeNBT(info, songInfoTag);
-            tag.put(SONG_INFO_TAG, songInfoTag);
-            stack.setNbt(tag);
+           stack.set(InitDataComponent.SONG_INFO, info);
         }
         return stack;
     }
@@ -90,7 +80,7 @@ public class ItemMusicCD extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         SongInfo info = getSongInfo(stack);
         final String prefix = "§a▍ §7";
         final String delimiter = ": ";
@@ -114,6 +104,39 @@ public class ItemMusicCD extends Item {
 
     public static class SongInfo{
 
+        public static final Codec<SongInfo> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.STRING.fieldOf("url").forGetter(i -> i.songUrl),
+                Codec.STRING.fieldOf("name").forGetter(i -> i.songName),
+                Codec.INT.fieldOf("time_second").forGetter(i -> i.songTime),
+                Codec.STRING.optionalFieldOf("trans_name", StringUtils.EMPTY).forGetter(i -> i.transName),
+                Codec.BOOL.optionalFieldOf("vip", false).forGetter(i -> i.vip),
+                Codec.BOOL.optionalFieldOf("readOnly", false).forGetter(i -> i.readOnly),
+                Codec.STRING.listOf().optionalFieldOf("artists", Collections.emptyList()).forGetter(i -> i.artists)
+        ).apply(instance, SongInfo::new));
+
+        private static final PacketCodec<ByteBuf, List<String>> ARTISTS_CODEC = PacketCodecs.collection(ArrayList::new, PacketCodecs.STRING);
+
+        public static final PacketCodec<ByteBuf, SongInfo> STREAM_CODEC = PacketCodec.ofStatic(
+                (buffer, songInfo) -> {
+                    PacketCodecs.STRING.encode(buffer, songInfo.songUrl);
+                    PacketCodecs.STRING.encode(buffer, songInfo.songName);
+                    PacketCodecs.VAR_INT.encode(buffer, songInfo.songTime);
+                    PacketCodecs.STRING.encode(buffer, songInfo.transName);
+                    PacketCodecs.BOOL.encode(buffer, songInfo.vip);
+                    PacketCodecs.BOOL.encode(buffer, songInfo.readOnly);
+                    ARTISTS_CODEC.encode(buffer, songInfo.artists);
+                },
+                buffer -> new SongInfo(
+                        PacketCodecs.STRING.decode(buffer),
+                        PacketCodecs.STRING.decode(buffer),
+                        PacketCodecs.VAR_INT.decode(buffer),
+                        PacketCodecs.STRING.decode(buffer),
+                        PacketCodecs.BOOL.decode(buffer),
+                        PacketCodecs.BOOL.decode(buffer),
+                        ARTISTS_CODEC.decode(buffer)
+                )
+        );
+
         @SerializedName("url")
         public String songUrl;
 
@@ -135,11 +158,18 @@ public class ItemMusicCD extends Item {
         @SerializedName("artists")
         public List<String> artists = Lists.newArrayList();
 
-        public SongInfo(String songUrl, String songName, int songTime, boolean readOnly) {
+        public SongInfo(String songUrl, String songName, int songTime, String transName, boolean vip, boolean readOnly, List<String> artists) {
             this.songUrl = songUrl;
             this.songName = songName;
             this.songTime = songTime;
+            this.transName = transName;
+            this.vip = vip;
             this.readOnly = readOnly;
+            this.artists = artists;
+        }
+
+        public SongInfo(String songUrl, String songName, int songTime, boolean readOnly) {
+            this(songUrl, songName, songTime, "", false, readOnly, Collections.emptyList());
         }
 
         public SongInfo(NetEaseMusicSong pojo) {
@@ -199,6 +229,28 @@ public class ItemMusicCD extends Item {
                 info.artists.forEach(artist -> nbtList.add(NbtString.of(artist)));
                 nbt.put("artists", nbtList);
             }
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            } else if (!(obj instanceof SongInfo other)) {
+                return false;
+            } else {
+                return Objects.equals(songUrl, other.songUrl)
+                        && Objects.equals(songName, other.songName)
+                        && Objects.equals(songTime, other.songTime)
+                        && Objects.equals(transName, other.transName)
+                        && Objects.equals(vip, other.vip)
+                        && Objects.equals(readOnly, other.readOnly)
+                        && Objects.equals(artists, other.artists);
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(songUrl, songName, songTime, transName, vip, readOnly, artists);
         }
     }
 }

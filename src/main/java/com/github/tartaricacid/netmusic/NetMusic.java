@@ -10,8 +10,10 @@ import com.github.tartaricacid.netmusic.inventory.ComputerMenu;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -28,8 +30,8 @@ public class NetMusic implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static WebApi NET_EASE_WEB_API;
 
-	public static final ScreenHandlerType<CDBurnerMenu> CD_BURNER_MENU_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier(MOD_ID, "cd_burner"), CDBurnerMenu::new);
-	public static final ScreenHandlerType<ComputerMenu> COMPUTER_MENU_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier(MOD_ID, "computer"), ComputerMenu::new);
+	public static final ScreenHandlerType<CDBurnerMenu> CD_BURNER_MENU_SCREEN_HANDLER_TYPE = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(MOD_ID, "cd_burner"), new ScreenHandlerType<>(CDBurnerMenu::new, FeatureSet.empty()));
+	public static final ScreenHandlerType<ComputerMenu> COMPUTER_MENU_SCREEN_HANDLER_TYPE = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(MOD_ID, "computer"), new ScreenHandlerType<>(ComputerMenu::new, FeatureSet.empty()));
 
 	@Override
 	public void onInitialize() {
@@ -44,6 +46,7 @@ public class NetMusic implements ModInitializer {
 		InitBlocks.init();
 		InitItems.init();
 		InitBlockEntity.init();
+		InitDataComponent.init();
 		InitSounds.init();
 		CommandRegistry.registryCommand();
 		ReceiverRegistry.register();

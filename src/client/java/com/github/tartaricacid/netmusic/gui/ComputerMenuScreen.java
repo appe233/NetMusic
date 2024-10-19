@@ -4,7 +4,6 @@ import com.github.tartaricacid.netmusic.NetMusic;
 import com.github.tartaricacid.netmusic.inventory.ComputerMenu;
 import com.github.tartaricacid.netmusic.item.ItemMusicCD;
 import com.github.tartaricacid.netmusic.network.ClientNetWorkHandler;
-import com.github.tartaricacid.netmusic.networking.NetworkHandler;
 import com.github.tartaricacid.netmusic.networking.message.SetMusicIDMessage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -54,8 +53,11 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         this.initUrlEditBox();
         this.initNameEditBox();
         this.initTimeEditBox();
-        this.readOnlyButton = new CheckboxWidget(x + 58, y + 55, 80, 20,
-                Text.translatable("gui.netmusic.cd_burner.read_only"), false);
+        this.readOnlyButton = CheckboxWidget.builder(Text.translatable("gui.netmusic.cd_burner.read_only"), textRenderer)
+                .pos(x + 58, y + 55)
+                .maxWidth(80)
+                .checked(false)
+                .build();
         this.addDrawableChild(readOnlyButton);
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.netmusic.cd_burner.craft"), button -> handleCraftButton())
                         .position(x + 7, y + 78)
@@ -76,7 +78,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         urlTextField.setMaxLength(32500);
         urlTextField.setEditableColor(0xF3EFE0);
         urlTextField.setFocused(focus);
-        urlTextField.setCursorToEnd();
+        urlTextField.setCursorToEnd(false);
         this.addSelectableChild(urlTextField);
     }
 
@@ -93,7 +95,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         nameTextField.setMaxLength(256);
         nameTextField.setEditableColor(0xF3EFE0);
         nameTextField.setFocused(focus);
-        nameTextField.setCursorToEnd();
+        nameTextField.setCursorToEnd(false);
         this.addSelectableChild(nameTextField);
     }
 
@@ -110,7 +112,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         timeTextField.setMaxLength(5);
         timeTextField.setEditableColor(0xF3EFE0);
         timeTextField.setFocused(focus);
-        timeTextField.setCursorToEnd();
+        timeTextField.setCursorToEnd(false);
         this.addSelectableChild(timeTextField);
     }
 
@@ -182,7 +184,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         urlTextField.render(context, mouseX, mouseY, delta);
         nameTextField.render(context, mouseX, mouseY, delta);
@@ -211,12 +213,12 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         this.timeTextField.setText(timeValue);
     }
 
-    @Override
-    protected void handledScreenTick() {
-        this.urlTextField.tick();
-        this.nameTextField.tick();
-        this.timeTextField.tick();
-    }
+//    @Override
+//    protected void handledScreenTick() {
+//        this.urlTextField.tick();
+//        this.nameTextField.tick();
+//        this.timeTextField.tick();
+//    }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

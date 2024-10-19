@@ -1,14 +1,10 @@
 package com.github.tartaricacid.netmusic.renderer;
 
 import com.github.tartaricacid.netmusic.NetMusic;
-import com.github.tartaricacid.netmusic.init.InitBlocks;
-import com.github.tartaricacid.netmusic.init.InitItems;
-import com.github.tartaricacid.netmusic.item.ItemMusicPlayer;
 import com.github.tartaricacid.netmusic.math.Axis;
 import com.github.tartaricacid.netmusic.model.ModelMusicPlayer;
 import com.github.tartaricacid.netmusic.tileentity.TileEntityMusicPlayer;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -16,7 +12,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -68,7 +63,7 @@ public class MusicPlayerRenderer implements BlockEntityRenderer<TileEntityMusicP
         }
         matrixStack.multiply(Axis.ZP.rotationDegrees(180));
         VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE));
-        MODEL.render(matrixStack, buffer, combinedLight, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+        MODEL.render(matrixStack, buffer, combinedLight, OverlayTexture.DEFAULT_UV, 0xffffffff);
         matrixStack.pop();
     }
 }

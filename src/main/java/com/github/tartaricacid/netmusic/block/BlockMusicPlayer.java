@@ -2,6 +2,7 @@ package com.github.tartaricacid.netmusic.block;
 
 import com.github.tartaricacid.netmusic.item.ItemMusicCD;
 import com.github.tartaricacid.netmusic.tileentity.TileEntityMusicPlayer;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,14 +12,13 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -29,9 +29,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEntityProvider {
 
-    public BlockMusicPlayer(Settings settings) {
+    public BlockMusicPlayer() {
         super(Settings.create().sounds(BlockSoundGroup.WOOD).strength(0.5f));
         this.setDefaultState(this.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.SOUTH));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return AbstractBlock.createCodec((settings) -> new BlockMusicPlayer());
     }
 
     @Override
@@ -73,37 +78,37 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (hand == Hand.OFF_HAND){
-            return ActionResult.PASS;
+            return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         BlockEntity te = world.getBlockEntity(pos);
         if (!(te instanceof TileEntityMusicPlayer musicPlayer)){
-            return ActionResult.PASS;
+            return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
-        ItemStack stack = musicPlayer.getStack(0);
-        if (!stack.isEmpty()){
+        ItemStack itemStack1 = musicPlayer.getStack(0);
+        if (!itemStack1.isEmpty()){
             if (musicPlayer.isPlay()){
                 musicPlayer.setPlay(false);
                 musicPlayer.setCurrentTime(0);
             }
             ItemStack itemStack = musicPlayer.removeStack(0);
             Block.dropStack(world, pos, itemStack);
-            return ActionResult.SUCCESS;
+            return ItemActionResult.SUCCESS;
         }
 
         ItemStack heldStack = player.getStackInHand(hand);
         ItemMusicCD.SongInfo info = ItemMusicCD.getSongInfo(heldStack);
         if (info == null){
-            return ActionResult.PASS;
+            return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         if (info.vip) {
             if (world.isClient){
                 player.sendMessage(Text.translatable("message.netmusic.music_player.need_vip").formatted(Formatting.RED), true);
             }
-            return ActionResult.FAIL;
+            return ItemActionResult.FAIL;
         }
 
         musicPlayer.setStack(0, heldStack.copyWithCount(1));
@@ -113,7 +118,7 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
         musicPlayer.setPlayToClient(info);
         musicPlayer.markDirty();
 
-        return ActionResult.SUCCESS;
+        return ItemActionResult.SUCCESS;
     }
 
     @Override

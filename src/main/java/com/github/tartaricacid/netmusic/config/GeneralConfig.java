@@ -26,7 +26,7 @@ public class GeneralConfig {
 
     public static final ConfigClassHandler<GeneralConfig> INSTANCE = ConfigClassHandler
             .createBuilder(GeneralConfig.class)
-            .id(new Identifier(NetMusic.MOD_ID, "common"))
+            .id(Identifier.of(NetMusic.MOD_ID, "common"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve(NetMusic.MOD_ID).resolve("common.json5"))
                     .appendGsonBuilder(GsonBuilder::setPrettyPrinting)

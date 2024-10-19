@@ -398,14 +398,14 @@ public class ModelMusicPlayer<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-        laba.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        tube.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        wheel.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        ruler.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        box.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        disc.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        getDiscBone.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
+        laba.render(matrices, vertices, light, overlay, color);
+        tube.render(matrices, vertices, light, overlay, color);
+        wheel.render(matrices, vertices, light, overlay, color);
+        ruler.render(matrices, vertices, light, overlay, color);
+        box.render(matrices, vertices, light, overlay, color);
+        disc.render(matrices, vertices, light, overlay, color);
+        getDiscBone.render(matrices, vertices, light, overlay, color);
     }
 
     public ModelPart getDiscBone(){return disc;}

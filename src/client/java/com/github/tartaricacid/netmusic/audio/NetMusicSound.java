@@ -2,7 +2,6 @@ package com.github.tartaricacid.netmusic.audio;
 
 import com.github.tartaricacid.netmusic.init.InitSounds;
 import com.github.tartaricacid.netmusic.tileentity.TileEntityMusicPlayer;
-import javazoom.jl.decoder.JavaLayerException;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.AudioStream;
@@ -15,10 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 

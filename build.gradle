@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.8-SNAPSHOT'
 	id 'maven-publish'
 	id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
@@ -77,7 +77,7 @@ dependencies {
 	implementation include("com.googlecode.soundlibs:jlayer:1.0.1.4")
 	implementation include("com.googlecode.soundlibs:tritonus-share:0.3.7.4")
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation include("dev.isxander:yet-another-config-lib:3.5.0+1.20.1-fabric")
+	modImplementation include("dev.isxander:yet-another-config-lib:3.5.0+1.21-fabric")
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
@@ -91,7 +91,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 //shadowJar{
@@ -115,8 +115,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {

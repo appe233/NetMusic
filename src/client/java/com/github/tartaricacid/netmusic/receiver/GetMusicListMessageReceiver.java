@@ -2,11 +2,9 @@ package com.github.tartaricacid.netmusic.receiver;
 
 import com.github.tartaricacid.netmusic.config.MusicListManage;
 import com.github.tartaricacid.netmusic.networking.message.GetMusicListMessage;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -16,11 +14,11 @@ import java.util.concurrent.CompletableFuture;
  * @author : IMG
  * @create : 2024/10/11
  */
-public class GetMusicListMessageReceiver {
+public class GetMusicListMessageReceiver implements ClientPlayNetworking.PlayPayloadHandler<GetMusicListMessage> {
 
-    public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        GetMusicListMessage message = GetMusicListMessage.getMessageFromBuffer(buf);
-        client.execute(() -> {
+    @Override
+    public void receive(GetMusicListMessage message, ClientPlayNetworking.Context context) {
+        context.client().execute(() -> {
             CompletableFuture.runAsync(() -> {
                 ClientPlayerEntity player = MinecraftClient.getInstance().player;
                 try {

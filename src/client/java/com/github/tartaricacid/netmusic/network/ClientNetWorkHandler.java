@@ -1,8 +1,7 @@
 package com.github.tartaricacid.netmusic.network;
 
-import com.github.tartaricacid.netmusic.networking.message.Message;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.CustomPayload;
 
 /**
  * @author : IMG
@@ -10,8 +9,7 @@ import net.minecraft.network.PacketByteBuf;
  */
 public class ClientNetWorkHandler {
 
-    public static void sendToServer(Message<?> message) {
-        PacketByteBuf buffer = message.toBuffer();
-        ClientPlayNetworking.send(message.getPacketId(), buffer);
+    public static void sendToServer(CustomPayload toSend) {
+        ClientPlayNetworking.send(toSend);
     }
 }

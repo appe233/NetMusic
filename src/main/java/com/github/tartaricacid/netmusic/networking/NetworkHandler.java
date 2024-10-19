@@ -1,14 +1,10 @@
 package com.github.tartaricacid.netmusic.networking;
 
-import com.github.tartaricacid.netmusic.networking.message.Message;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 /**
@@ -17,18 +13,17 @@ import net.minecraft.world.World;
  */
 public class NetworkHandler {
 
-    public static void sendToNearBy(World world, BlockPos pos, Message<?> message) {
+    public static void sendToNearBy(World world, BlockPos pos, CustomPayload toSend) {
         if (world instanceof ServerWorld){
             ServerWorld serverWorld = (ServerWorld) world;
 
-            PacketByteBuf buffer = message.toBuffer();
-            serverWorld.getChunkManager().threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(pos), false).stream()
+            serverWorld.getServer().getPlayerManager().getPlayerList().stream()
                     .filter(p -> p.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < 96 * 96)
-                    .forEach(p -> ServerPlayNetworking.send(p, message.getPacketId(), buffer));
+                    .forEach(p -> ServerPlayNetworking.send(p, toSend));
         }
     }
 
-    public static void sendToClientPlayer(Message<?> message, ServerPlayerEntity player) {
-        ServerPlayNetworking.send(player, message.getPacketId(), message.toBuffer());
+    public static void sendToClientPlayer(CustomPayload toSend, ServerPlayerEntity player) {
+        ServerPlayNetworking.send(player, toSend);
     }
 }

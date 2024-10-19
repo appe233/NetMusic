@@ -1,8 +1,11 @@
 package com.github.tartaricacid.netmusic.init;
 
+import com.github.tartaricacid.netmusic.networking.message.GetMusicListMessage;
+import com.github.tartaricacid.netmusic.networking.message.MusicToClientMessage;
+import com.github.tartaricacid.netmusic.networking.message.SetMusicIDMessage;
 import com.github.tartaricacid.netmusic.receiver.SetMusicIDMessageReceiver;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 /**
  * @author : IMG
@@ -11,6 +14,9 @@ import net.fabricmc.api.Environment;
 public class ReceiverRegistry {
 
     public static void register() {
-        SetMusicIDMessageReceiver.receive();
+        PayloadTypeRegistry.playS2C().register(GetMusicListMessage.TYPE, GetMusicListMessage.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(MusicToClientMessage.TYPE, MusicToClientMessage.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(SetMusicIDMessage.TYPE, SetMusicIDMessage.STREAM_CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(SetMusicIDMessage.TYPE, new SetMusicIDMessageReceiver());
     }
 }

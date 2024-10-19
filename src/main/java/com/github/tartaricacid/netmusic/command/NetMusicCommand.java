@@ -67,7 +67,7 @@ public class NetMusicCommand {
                 ItemEntity dropItem = serverPlayer.dropItem(musicDisc, false);
                 if (dropItem != null) {
                     dropItem.resetPickupDelay();
-                    dropItem.setThrower(serverPlayer.getUuid());
+                    dropItem.setThrower(serverPlayer);
                 }
             }
             context.getSource().sendFeedback(() -> Text.translatable("command.netmusic.music_cd.add163cd.success"), false);
