@@ -38,18 +38,18 @@ public class MusicListManage implements SimpleSynchronousResourceReloadListener 
     public static List<ItemMusicCD.SongInfo> SONGS = Lists.newArrayList();
 
     public static void loadConfigSongs(ResourceManager manager) throws IOException {
-        if (!Files.isDirectory(CONFIG_DIR)){
+        if (!Files.isDirectory(CONFIG_DIR)) {
             Files.createDirectories(CONFIG_DIR);
         }
 
         File file = CONFIG_FILE.toFile();
         InputStream stream = null;
-        if (Files.exists(CONFIG_FILE)){
+        if (Files.exists(CONFIG_FILE)) {
             stream = Files.newInputStream(file.toPath());
-        }else {
+        } else {
             Identifier res = Identifier.of(NetMusic.MOD_ID, "music.json");
             Optional<Resource> optional = manager.getResource(res);
-            if (optional.isPresent()){
+            if (optional.isPresent()) {
                 stream = optional.get().getInputStream();
             }
         }
@@ -66,7 +66,7 @@ public class MusicListManage implements SimpleSynchronousResourceReloadListener 
     }
 
     public static void add163List(long id) throws Exception {
-        if (!Files.isDirectory(CONFIG_DIR)){
+        if (!Files.isDirectory(CONFIG_DIR)) {
             Files.createDirectories(CONFIG_DIR);
         }
 

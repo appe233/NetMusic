@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class NetworkHandler {
 
     public static void sendToNearBy(World world, BlockPos pos, CustomPayload toSend) {
-        if (world instanceof ServerWorld){
+        if (world instanceof ServerWorld) {
             ServerWorld serverWorld = (ServerWorld) world;
 
             serverWorld.getServer().getPlayerManager().getPlayerList().stream()

@@ -14,12 +14,12 @@ public interface ImplementedInventory extends Inventory {
     DefaultedList<ItemStack> getItems();
 
     @Override
-    default int size(){
+    default int size() {
         return getItems().size();
     }
 
     @Override
-    default boolean isEmpty(){
+    default boolean isEmpty() {
         for (int i = 0; i < size(); i++) {
             if (!getStack(i).isEmpty()) {
                 return false;

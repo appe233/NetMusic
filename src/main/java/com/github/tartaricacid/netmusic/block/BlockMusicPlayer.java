@@ -4,7 +4,9 @@ import com.github.tartaricacid.netmusic.item.ItemMusicCD;
 import com.github.tartaricacid.netmusic.tileentity.TileEntityMusicPlayer;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -79,18 +81,18 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
 
     @Override
     public ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (hand == Hand.OFF_HAND){
+        if (hand == Hand.OFF_HAND) {
             return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         BlockEntity te = world.getBlockEntity(pos);
-        if (!(te instanceof TileEntityMusicPlayer musicPlayer)){
+        if (!(te instanceof TileEntityMusicPlayer musicPlayer)) {
             return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         ItemStack itemStack1 = musicPlayer.getStack(0);
-        if (!itemStack1.isEmpty()){
-            if (musicPlayer.isPlay()){
+        if (!itemStack1.isEmpty()) {
+            if (musicPlayer.isPlay()) {
                 musicPlayer.setPlay(false);
                 musicPlayer.setCurrentTime(0);
             }
@@ -101,18 +103,18 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
 
         ItemStack heldStack = player.getStackInHand(hand);
         ItemMusicCD.SongInfo info = ItemMusicCD.getSongInfo(heldStack);
-        if (info == null){
+        if (info == null) {
             return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         if (info.vip) {
-            if (world.isClient){
+            if (world.isClient) {
                 player.sendMessage(Text.translatable("message.netmusic.music_player.need_vip").formatted(Formatting.RED), true);
             }
             return ItemActionResult.FAIL;
         }
 
         musicPlayer.setStack(0, heldStack.copyWithCount(1));
-        if (!player.isCreative()){
+        if (!player.isCreative()) {
             heldStack.decrement(1);
         }
         musicPlayer.setPlayToClient(info);
@@ -124,9 +126,9 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         BlockEntity te = world.getBlockEntity(pos);
-        if (te instanceof TileEntityMusicPlayer musicPlayer){
+        if (te instanceof TileEntityMusicPlayer musicPlayer) {
             ItemStack stack = musicPlayer.getStack(0);
-            if (!stack.isEmpty()){
+            if (!stack.isEmpty()) {
                 musicPlayer.setPlay(false);
                 musicPlayer.setCurrentTime(0);
                 Block.dropStack(world, pos, stack);
@@ -144,10 +146,10 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof TileEntityMusicPlayer te){
+        if (blockEntity instanceof TileEntityMusicPlayer te) {
             ItemStack stackInSlot = te.getStack(0);
-            if (!stackInSlot.isEmpty()){
-                if (te.isPlay()){
+            if (!stackInSlot.isEmpty()) {
+                if (te.isPlay()) {
                     return 15;
                 }
                 return 7;
@@ -166,14 +168,14 @@ public class BlockMusicPlayer extends HorizontalFacingBlock implements BlockEnti
         if (blockEntity instanceof TileEntityMusicPlayer player) {
             if (signal != player.hasSignal()) {
                 if (signal) {
-                    if (player.isPlay()){
+                    if (player.isPlay()) {
                         player.setPlay(false);
                         player.setSignal(signal);
                         player.markDirty();
                         return;
                     }
                     ItemStack stackInSlot = player.getStack(0);
-                    if (stackInSlot.isEmpty()){
+                    if (stackInSlot.isEmpty()) {
                         player.setSignal(signal);
                         player.markDirty();
                         return;

@@ -48,7 +48,7 @@ public class ItemMusicCD extends Item {
 
     public static ItemStack setSongInfo(SongInfo info, ItemStack stack) {
         if (stack.getItem() == InitItems.MUSIC_CD) {
-           stack.set(InitDataComponent.SONG_INFO, info);
+            stack.set(InitDataComponent.SONG_INFO, info);
         }
         return stack;
     }
@@ -56,12 +56,12 @@ public class ItemMusicCD extends Item {
     @Override
     public Text getName(ItemStack stack) {
         SongInfo info = getSongInfo(stack);
-        if (info != null){
+        if (info != null) {
             String name = info.songName;
-            if (info.vip){
+            if (info.vip) {
                 name = name + " §4§l[VIP]";
             }
-            if (info.readOnly){
+            if (info.readOnly) {
                 MutableText readOnlyText = Text.translatable("tooltips.netmusic.cd.read_only").formatted(Formatting.YELLOW);
                 return Text.literal(name).append(Text.literal(" ")).append(readOnlyText);
             }
@@ -70,7 +70,7 @@ public class ItemMusicCD extends Item {
         return super.getName(stack);
     }
 
-    private String getSongTime(int songTime){
+    private String getSongTime(int songTime) {
         int min = songTime / 60;
         int sec = songTime % 60;
         String minStr = min <= 9 ? ("0" + min) : ("" + min);
@@ -85,24 +85,24 @@ public class ItemMusicCD extends Item {
         final String prefix = "§a▍ §7";
         final String delimiter = ": ";
         Language language = Language.getInstance();
-        if (info != null){
-            if (StringUtils.isNoneBlank(info.transName)){
+        if (info != null) {
+            if (StringUtils.isNoneBlank(info.transName)) {
                 String text = prefix + language.get("tooltips.netmusic.cd.trans_name") + delimiter + "§6" + info.transName;
                 tooltip.add(Text.literal(text));
             }
-            if (info.artists != null && !info.artists.isEmpty()){
+            if (info.artists != null && !info.artists.isEmpty()) {
                 String artistNames = StringUtils.join(info.artists, " | ");
                 String text = prefix + language.get("tooltips.netmusic.cd.artists") + delimiter + "§3" + artistNames;
                 tooltip.add(Text.literal(text));
             }
             String text = prefix + language.get("tooltips.netmusic.cd.time") + delimiter + "§5" + getSongTime(info.songTime);
             tooltip.add(Text.literal(text));
-        }else {
+        } else {
             tooltip.add(Text.translatable("tooltips.netmusic.cd.empty").formatted(Formatting.RED));
         }
     }
 
-    public static class SongInfo{
+    public static class SongInfo {
 
         public static final Codec<SongInfo> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("url").forGetter(i -> i.songUrl),
@@ -211,7 +211,7 @@ public class ItemMusicCD extends Item {
             }
         }
 
-        public static SongInfo deserializeNBT(NbtCompound nbt){
+        public static SongInfo deserializeNBT(NbtCompound nbt) {
             return new SongInfo(nbt);
         }
 
@@ -239,12 +239,12 @@ public class ItemMusicCD extends Item {
                 return false;
             } else {
                 return Objects.equals(songUrl, other.songUrl)
-                        && Objects.equals(songName, other.songName)
-                        && Objects.equals(songTime, other.songTime)
-                        && Objects.equals(transName, other.transName)
-                        && Objects.equals(vip, other.vip)
-                        && Objects.equals(readOnly, other.readOnly)
-                        && Objects.equals(artists, other.artists);
+                       && Objects.equals(songName, other.songName)
+                       && Objects.equals(songTime, other.songTime)
+                       && Objects.equals(transName, other.transName)
+                       && Objects.equals(vip, other.vip)
+                       && Objects.equals(readOnly, other.readOnly)
+                       && Objects.equals(artists, other.artists);
             }
         }
 

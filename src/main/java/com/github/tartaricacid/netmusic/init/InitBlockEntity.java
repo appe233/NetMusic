@@ -22,6 +22,6 @@ public class InitBlockEntity {
         return Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(NetMusic.MOD_ID, name), blockEntityType);
     }
 
-    public static void init(){
+    public static void init() {
     }
 }

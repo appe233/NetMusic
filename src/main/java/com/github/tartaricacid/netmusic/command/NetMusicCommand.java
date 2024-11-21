@@ -63,7 +63,7 @@ public class NetMusicCommand {
                 serverPlayer.getEntityWorld().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
                         ((serverPlayer.getRandom().nextFloat() - serverPlayer.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 serverPlayer.currentScreenHandler.sendContentUpdates();
-            }else {
+            } else {
                 ItemEntity dropItem = serverPlayer.dropItem(musicDisc, false);
                 if (dropItem != null) {
                     dropItem.resetPickupDelay();
@@ -71,7 +71,7 @@ public class NetMusicCommand {
                 }
             }
             context.getSource().sendFeedback(() -> Text.translatable("command.netmusic.music_cd.add163cd.success"), false);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             context.getSource().sendError(Text.translatable("command.netmusic.music_cd.add163cd.fail"));
         }
@@ -83,7 +83,7 @@ public class NetMusicCommand {
             long listId = LongArgumentType.getLong(context, SONG_LIST_ID);
             ServerPlayerEntity serverPlayer = context.getSource().getPlayerOrThrow();
             NetworkHandler.sendToClientPlayer(new GetMusicListMessage(listId), serverPlayer);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Command.SINGLE_SUCCESS;
@@ -93,7 +93,7 @@ public class NetMusicCommand {
         try {
             ServerPlayerEntity serverPlayer = context.getSource().getPlayerOrThrow();
             NetworkHandler.sendToClientPlayer(new GetMusicListMessage(GetMusicListMessage.RELOAD_MESSAGE), serverPlayer);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Command.SINGLE_SUCCESS;

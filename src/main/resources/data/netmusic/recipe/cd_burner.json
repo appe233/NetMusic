@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "result": {
-    "item": "netmusic:cd_burner"
+    "id": "netmusic:cd_burner"
   },
   "ingredients": [
     {

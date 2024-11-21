@@ -16,7 +16,7 @@ public class SetMusicIDMessageReceiver implements ServerPlayNetworking.PlayPaylo
     public void receive(SetMusicIDMessage message, ServerPlayNetworking.Context context) {
         ServerPlayerEntity player = context.player();
         context.server().execute(() -> {
-            if (player == null){
+            if (player == null) {
                 return;
             }
             if (player.currentScreenHandler instanceof CDBurnerMenu menu) {

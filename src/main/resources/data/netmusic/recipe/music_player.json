@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "netmusic:music_player"
+    "id": "netmusic:music_player"
   },
   "pattern": [
     "OBO",
