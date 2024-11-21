@@ -20,6 +20,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -174,6 +175,10 @@ public class CDBurnerMenuScreen extends HandledScreen<CDBurnerMenu> {
             long id = Long.parseLong(textField.getText());
             try {
                 ItemMusicCD.SongInfo song = MusicListManage.get163Song(id);
+                if (StringUtils.isBlank(song.songUrl)) {
+                    this.tips = Text.translatable("gui.netmusic.cd_burner.get_info_error");
+                    return;
+                }
                 song.readOnly = readOnlyButton.isChecked();
                 ClientNetWorkHandler.sendToServer(new SetMusicIDMessage(song));
             } catch (Exception e) {
