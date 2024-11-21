@@ -2,10 +2,7 @@ package com.github.tartaricacid.netmusic.networking.message;
 
 import com.github.tartaricacid.netmusic.NetMusic;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 

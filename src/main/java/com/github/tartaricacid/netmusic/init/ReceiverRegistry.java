@@ -1,8 +1,6 @@
 package com.github.tartaricacid.netmusic.init;
 
 import com.github.tartaricacid.netmusic.receiver.SetMusicIDMessageReceiver;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 /**
  * @author : IMG

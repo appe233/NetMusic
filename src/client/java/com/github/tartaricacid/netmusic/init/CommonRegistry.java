@@ -4,7 +4,6 @@ import com.github.tartaricacid.netmusic.NetMusic;
 import com.github.tartaricacid.netmusic.constants.NetworkingConst;
 import com.github.tartaricacid.netmusic.gui.CDBurnerMenuScreen;
 import com.github.tartaricacid.netmusic.gui.ComputerMenuScreen;
-import com.github.tartaricacid.netmusic.networking.message.GetMusicListMessage;
 import com.github.tartaricacid.netmusic.receiver.GetMusicListMessageReceiver;
 import com.github.tartaricacid.netmusic.receiver.MusicToClientMessageReceiver;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;

@@ -1,9 +1,7 @@
 package com.github.tartaricacid.netmusic.inventory;
 
 import com.github.tartaricacid.netmusic.init.InitItems;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
 
 /**
  * @author : IMG

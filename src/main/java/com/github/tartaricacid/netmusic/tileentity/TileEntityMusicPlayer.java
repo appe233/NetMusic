@@ -87,25 +87,27 @@ public class TileEntityMusicPlayer extends BlockEntity implements MusicPlayerInv
         markDirty();
     }
 
-    public int getCurrentTime(){
+    public int getCurrentTime() {
         return currentTime;
     }
 
-    public boolean hasSignal(){return hasSignal;}
+    public boolean hasSignal() {
+        return hasSignal;
+    }
 
-    public void setSignal(boolean signal){
+    public void setSignal(boolean signal) {
         this.hasSignal = signal;
     }
 
-    public void tickTime(){
-        if (currentTime > 0){
+    public void tickTime() {
+        if (currentTime > 0) {
             currentTime--;
         }
     }
 
-    public static void tick(World world, BlockPos blockPos, BlockState blockState, TileEntityMusicPlayer te){
+    public static void tick(World world, BlockPos blockPos, BlockState blockState, TileEntityMusicPlayer te) {
         te.tickTime();
-        if ((0 < te.getCurrentTime() && te.getCurrentTime() < 16 && te.getCurrentTime() % 5 == 0) || te.getStack(0).isEmpty()){
+        if ((0 < te.getCurrentTime() && te.getCurrentTime() < 16 && te.getCurrentTime() % 5 == 0) || te.getStack(0).isEmpty()) {
             te.setPlay(false);
         }
         te.markDirty();
@@ -142,21 +144,21 @@ public class TileEntityMusicPlayer extends BlockEntity implements MusicPlayerInv
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
-    public boolean isPlay(){
+    public boolean isPlay() {
         return isPlay;
     }
 
-    public void setPlay(boolean play){
+    public void setPlay(boolean play) {
         isPlay = play;
         markDirty();
     }
 
-    public void setPlayToClient(ItemMusicCD.SongInfo info){
+    public void setPlayToClient(ItemMusicCD.SongInfo info) {
         this.setCurrentTime(info.songTime * 20 + 64);
         setPlay(true);
-        if (world != null && !world.isClient){
-             MusicToClientMessage msg = new MusicToClientMessage(pos, info.songUrl, info.songTime, info.songName);
-             NetworkHandler.sendToNearBy(world, pos, msg);
+        if (world != null && !world.isClient) {
+            MusicToClientMessage msg = new MusicToClientMessage(pos, info.songUrl, info.songTime, info.songName);
+            NetworkHandler.sendToNearBy(world, pos, msg);
         }
     }
 

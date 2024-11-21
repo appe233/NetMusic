@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
  * @author : IMG
  * @create : 2024/10/3
  */
-public class SetMusicIDMessage implements Message<SetMusicIDMessage>{
+public class SetMusicIDMessage implements Message<SetMusicIDMessage> {
     private final static Identifier PACKET_ID = new Identifier(NetMusic.MOD_ID, "set_music_id");
     public final ItemMusicCD.SongInfo song;
 

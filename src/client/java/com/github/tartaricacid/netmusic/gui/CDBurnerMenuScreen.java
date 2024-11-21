@@ -5,22 +5,17 @@ import com.github.tartaricacid.netmusic.config.MusicListManage;
 import com.github.tartaricacid.netmusic.inventory.CDBurnerMenu;
 import com.github.tartaricacid.netmusic.item.ItemMusicCD;
 import com.github.tartaricacid.netmusic.network.ClientNetWorkHandler;
-import com.github.tartaricacid.netmusic.networking.NetworkHandler;
 import com.github.tartaricacid.netmusic.networking.message.SetMusicIDMessage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.client.gui.widget.EditBoxWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -58,7 +53,7 @@ public class CDBurnerMenuScreen extends HandledScreen<CDBurnerMenu> {
             perText = textField.getText();
             focus = textField.isFocused();
         }
-        textField = new TextFieldWidget(client.textRenderer, x + 12, y + 18, 132, 16, Text.empty()){
+        textField = new TextFieldWidget(client.textRenderer, x + 12, y + 18, 132, 16, Text.empty()) {
             @Override
             public void write(String text) {
                 Matcher matcher1 = URL_1_REG.matcher(text);
@@ -114,7 +109,7 @@ public class CDBurnerMenuScreen extends HandledScreen<CDBurnerMenu> {
         if (Util.isBlank(textField.getText()) && !textField.isFocused()) {
             context.drawText(textRenderer, Text.translatable("gui.netmusic.cd_burner.id.tips").formatted(Formatting.ITALIC), this.x + 12, this.y + 18, Formatting.GRAY.getColorValue(), false);
         }
-        context.drawTextWrapped(textRenderer, tips, this.x + 8, this.y +57, 135, 0xCF0000);
+        context.drawTextWrapped(textRenderer, tips, this.x + 8, this.y + 57, 135, 0xCF0000);
         this.drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
@@ -155,7 +150,7 @@ public class CDBurnerMenuScreen extends HandledScreen<CDBurnerMenu> {
     protected void insertText(String text, boolean override) {
         if (override) {
             this.textField.setText(text);
-        }else {
+        } else {
             this.textField.write(text);
         }
     }
@@ -181,11 +176,11 @@ public class CDBurnerMenuScreen extends HandledScreen<CDBurnerMenu> {
                 ItemMusicCD.SongInfo song = MusicListManage.get163Song(id);
                 song.readOnly = readOnlyButton.isChecked();
                 ClientNetWorkHandler.sendToServer(new SetMusicIDMessage(song));
-            }catch (Exception e){
+            } catch (Exception e) {
                 this.tips = Text.translatable("gui.netmusic.cd_burner.get_info_error");
                 e.printStackTrace();
             }
-        }else {
+        } else {
             this.tips = Text.translatable("gui.netmusic.cd_burner.music_id_error");
         }
     }

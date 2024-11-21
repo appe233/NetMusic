@@ -45,7 +45,7 @@ public class BlockComputer extends HorizontalFacingBlock {
         this.setDefaultState(this.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
     }
 
-    private static VoxelShape makeShape(){
+    private static VoxelShape makeShape() {
         VoxelShape shape = VoxelShapes.empty();
         shape = VoxelShapes.combineAndSimplify(shape, VoxelShapes.cuboid(0, 0, 0.40625, 1, 0.3125, 1), BooleanBiFunction.OR);
         shape = VoxelShapes.combineAndSimplify(shape, VoxelShapes.cuboid(0.1875, 0.3125, 0.40625, 0.8125, 0.375, 0.875), BooleanBiFunction.OR);

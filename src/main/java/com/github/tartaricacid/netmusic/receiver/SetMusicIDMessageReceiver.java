@@ -3,8 +3,6 @@ package com.github.tartaricacid.netmusic.receiver;
 import com.github.tartaricacid.netmusic.inventory.CDBurnerMenu;
 import com.github.tartaricacid.netmusic.inventory.ComputerMenu;
 import com.github.tartaricacid.netmusic.networking.message.SetMusicIDMessage;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 /**
@@ -17,7 +15,7 @@ public class SetMusicIDMessageReceiver {
         ServerPlayNetworking.registerGlobalReceiver(SetMusicIDMessage.getPacketIdStatic(), (server, player, handler, buf, responseSender) -> {
             SetMusicIDMessage message = SetMusicIDMessage.fromBuffer(buf);
             server.execute(() -> {
-                if (player == null){
+                if (player == null) {
                     return;
                 }
                 if (player.currentScreenHandler instanceof CDBurnerMenu menu) {

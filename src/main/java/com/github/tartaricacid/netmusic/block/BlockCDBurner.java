@@ -60,7 +60,7 @@ public class BlockCDBurner extends HorizontalFacingBlock {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient) {
             return ActionResult.SUCCESS;
-        }else {
+        } else {
             player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
             return ActionResult.CONSUME;
         }

@@ -16,14 +16,14 @@ import net.minecraft.screen.slot.Slot;
  * @create : 2024/10/11
  */
 public class ComputerMenu extends ScreenHandler {
-    public final Slot input = new Slot(new SimpleInventory(1), 0, 147, 14){
+    public final Slot input = new Slot(new SimpleInventory(1), 0, 147, 14) {
         @Override
         public boolean canInsert(ItemStack stack) {
             return stack.getItem() == InitItems.MUSIC_CD;
         }
     };
 
-    public final Slot output = new Slot(new SimpleInventory(1), 0, 147, 79){
+    public final Slot output = new Slot(new SimpleInventory(1), 0, 147, 79) {
         @Override
         public boolean canInsert(ItemStack stack) {
             return false;
@@ -62,20 +62,20 @@ public class ComputerMenu extends ScreenHandler {
     public ItemStack quickMove(PlayerEntity player, int slot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slotByIndex = this.slots.get(slot);
-        if (slotByIndex != null && slotByIndex.hasStack()){
+        if (slotByIndex != null && slotByIndex.hasStack()) {
             ItemStack slotItem = slotByIndex.getStack();
             itemStack = slotItem.copy();
             if (slot < 2) {
-                if (!this.insertItem(slotItem, 2, this.slots.size(), false)){
+                if (!this.insertItem(slotItem, 2, this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
-            }else if (!this.insertItem(slotItem, 0, 2, true)){
+            } else if (!this.insertItem(slotItem, 0, 2, true)) {
                 return ItemStack.EMPTY;
             }
 
-            if (slotItem.isEmpty()){
+            if (slotItem.isEmpty()) {
                 slotByIndex.setStack(ItemStack.EMPTY);
-            }else {
+            } else {
                 slotByIndex.markDirty();
             }
         }
@@ -90,8 +90,8 @@ public class ComputerMenu extends ScreenHandler {
     }
 
     private static void giveItemToPlayer(PlayerEntity player, ItemStack stack, int preferredSlot) {
-        if(!stack.isEmpty()){
-            if (!player.getInventory().insertStack(stack)){
+        if (!stack.isEmpty()) {
+            if (!player.getInventory().insertStack(stack)) {
                 player.dropItem(stack, false);
             }
         }

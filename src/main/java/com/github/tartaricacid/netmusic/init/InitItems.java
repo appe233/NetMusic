@@ -3,7 +3,6 @@ package com.github.tartaricacid.netmusic.init;
 import com.github.tartaricacid.netmusic.NetMusic;
 import com.github.tartaricacid.netmusic.config.MusicListManage;
 import com.github.tartaricacid.netmusic.item.ItemMusicCD;
-import com.github.tartaricacid.netmusic.item.ItemMusicPlayer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.BlockItem;

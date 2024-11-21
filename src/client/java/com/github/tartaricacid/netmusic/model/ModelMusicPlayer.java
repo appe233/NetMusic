@@ -3,7 +3,8 @@ package com.github.tartaricacid.netmusic.model;
 import com.github.tartaricacid.netmusic.NetMusic;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.entity.model.*;
+import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
@@ -408,5 +409,7 @@ public class ModelMusicPlayer<T extends Entity> extends EntityModel<T> {
         getDiscBone.render(matrices, vertices, light, overlay, red, green, blue, alpha);
     }
 
-    public ModelPart getDiscBone(){return disc;}
+    public ModelPart getDiscBone() {
+        return disc;
+    }
 }

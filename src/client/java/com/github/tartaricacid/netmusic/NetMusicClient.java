@@ -5,9 +5,9 @@ import com.github.tartaricacid.netmusic.init.InitRenderer;
 import net.fabricmc.api.ClientModInitializer;
 
 public class NetMusicClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+    @Override
+    public void onInitializeClient() {
         CommonRegistry.register();
-		InitRenderer.init();
-	}
+        InitRenderer.init();
+    }
 }

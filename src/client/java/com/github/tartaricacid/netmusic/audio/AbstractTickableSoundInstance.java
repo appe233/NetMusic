@@ -1,6 +1,5 @@
 package com.github.tartaricacid.netmusic.audio;
 
-import net.fabricmc.fabric.api.client.sound.v1.FabricSoundInstance;
 import net.minecraft.client.sound.AbstractSoundInstance;
 import net.minecraft.client.sound.TickableSoundInstance;
 import net.minecraft.sound.SoundCategory;

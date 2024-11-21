@@ -5,10 +5,7 @@ import com.github.tartaricacid.netmusic.renderer.MusicPlayerItemRenderer;
 import com.github.tartaricacid.netmusic.renderer.MusicPlayerRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
-import net.minecraft.client.render.entity.ItemEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
 
 /**
  * @author : IMG

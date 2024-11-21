@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
  * @author : IMG
  * @create : 2024/10/11
  */
-public class GetMusicListMessage implements Message<GetMusicListMessage>{
+public class GetMusicListMessage implements Message<GetMusicListMessage> {
     private static final Identifier PACKET_ID = new Identifier(NetMusic.MOD_ID, "get_music_list");
     private final long musicListId;
     public static final long RELOAD_MESSAGE = -1;

@@ -1,14 +1,10 @@
 package com.github.tartaricacid.netmusic.renderer;
 
 import com.github.tartaricacid.netmusic.NetMusic;
-import com.github.tartaricacid.netmusic.init.InitBlocks;
-import com.github.tartaricacid.netmusic.init.InitItems;
-import com.github.tartaricacid.netmusic.item.ItemMusicPlayer;
 import com.github.tartaricacid.netmusic.math.Axis;
 import com.github.tartaricacid.netmusic.model.ModelMusicPlayer;
 import com.github.tartaricacid.netmusic.tileentity.TileEntityMusicPlayer;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -16,7 +12,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -31,7 +26,7 @@ public class MusicPlayerRenderer implements BlockEntityRenderer<TileEntityMusicP
     public static final Identifier TEXTURE = Identifier.of(NetMusic.MOD_ID, "textures/block/music_player.png");
     public static MusicPlayerRenderer instance;
 
-    public MusicPlayerRenderer(BlockEntityRendererFactory.Context ctx){
+    public MusicPlayerRenderer(BlockEntityRendererFactory.Context ctx) {
         MODEL = new ModelMusicPlayer<>(ctx.getLayerModelPart(ModelMusicPlayer.LAYER));
         instance = this;
     }
@@ -52,7 +47,7 @@ public class MusicPlayerRenderer implements BlockEntityRenderer<TileEntityMusicP
         matrixStack.push();
         matrixStack.scale(0.75f, 0.75f, 0.75f);
         matrixStack.translate(0.5 / 0.75, 1.5, 0.5 / 0.75);
-        switch (facing){
+        switch (facing) {
             case NORTH:
             default:
                 break;

@@ -1,8 +1,6 @@
 package com.github.tartaricacid.netmusic.networking;
 
 import com.github.tartaricacid.netmusic.networking.message.Message;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,7 +16,7 @@ import net.minecraft.world.World;
 public class NetworkHandler {
 
     public static void sendToNearBy(World world, BlockPos pos, Message<?> message) {
-        if (world instanceof ServerWorld){
+        if (world instanceof ServerWorld) {
             ServerWorld serverWorld = (ServerWorld) world;
 
             PacketByteBuf buffer = message.toBuffer();

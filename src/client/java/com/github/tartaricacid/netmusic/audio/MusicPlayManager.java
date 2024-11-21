@@ -60,7 +60,7 @@ public class MusicPlayManager {
         }
     }
 
-    private static void setNowPlaying(Text songName){
+    private static void setNowPlaying(Text songName) {
         MutableText mutableText = Text.translatable("record.nowPlaying", new Object[]{songName});
         MinecraftClient.getInstance().inGameHud.setOverlayMessage(mutableText, true);
         MinecraftClient.getInstance().getNarratorManager().narrate(mutableText);
