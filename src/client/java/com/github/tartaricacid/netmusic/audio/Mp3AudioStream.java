@@ -6,7 +6,9 @@ import net.minecraft.client.sound.AudioStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.lwjgl.BufferUtils;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -20,7 +22,7 @@ public class Mp3AudioStream implements AudioStream {
     private final byte[] array;
     private int offset;
 
-    public Mp3AudioStream(URL url) throws Exception{
+    public Mp3AudioStream(URL url) throws Exception {
         try {
             AudioInputStream originalInputStream = new MpegAudioFileReader().getAudioInputStream(url);
             AudioFormat originalFormat = originalInputStream.getFormat();
@@ -36,7 +38,7 @@ public class Mp3AudioStream implements AudioStream {
             }
             this.array = IOUtils.toByteArray(stream);
             this.offset = 0;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }

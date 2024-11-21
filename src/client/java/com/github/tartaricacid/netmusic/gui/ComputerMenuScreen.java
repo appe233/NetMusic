@@ -60,12 +60,12 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
                 .build();
         this.addDrawableChild(readOnlyButton);
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.netmusic.cd_burner.craft"), button -> handleCraftButton())
-                        .position(x + 7, y + 78)
-                        .size(135, 18)
-                        .build());
+                .position(x + 7, y + 78)
+                .size(135, 18)
+                .build());
     }
 
-    private void initUrlEditBox(){
+    private void initUrlEditBox() {
         String perText = "";
         boolean focus = false;
         if (urlTextField != null) {
@@ -82,7 +82,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         this.addSelectableChild(urlTextField);
     }
 
-    private void initNameEditBox(){
+    private void initNameEditBox() {
         String preText = "";
         boolean focus = false;
         if (nameTextField != null) {
@@ -99,7 +99,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         this.addSelectableChild(nameTextField);
     }
 
-    private void initTimeEditBox(){
+    private void initTimeEditBox() {
         String preText = "";
         boolean focus = false;
         if (timeTextField != null) {
@@ -116,9 +116,9 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         this.addSelectableChild(timeTextField);
     }
 
-    private void handleCraftButton(){
+    private void handleCraftButton() {
         ItemStack cd = getScreenHandler().getInput().getStack();
-        if (cd.isEmpty()){
+        if (cd.isEmpty()) {
             this.tips = Text.translatable("gui.netmusic.cd_burner.cd_is_empty");
             return;
         }
@@ -130,32 +130,32 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
         }
         // 参数判空与合法性检查
         String urlText = urlTextField.getText();
-        if (Util.isBlank(urlText)){
+        if (Util.isBlank(urlText)) {
             this.tips = Text.translatable("gui.netmusic.computer.url.empty");
             return;
         }
         String nameText = nameTextField.getText();
-        if (Util.isBlank(nameText)){
+        if (Util.isBlank(nameText)) {
             this.tips = Text.translatable("gui.netmusic.computer.name.empty");
             return;
         }
         String timeText = timeTextField.getText();
-        if (Util.isBlank(timeText)){
+        if (Util.isBlank(timeText)) {
             this.tips = Text.translatable("gui.netmusic.computer.time.empty");
             return;
         }
 
-        if (!TIME_REG.matcher(timeText).matches()){
+        if (!TIME_REG.matcher(timeText).matches()) {
             this.tips = Text.translatable("gui.netmusic.computer.time.not_number");
             return;
         }
         int time = Integer.parseInt(timeText);
-        if (URL_HTTP_REG.matcher(urlText).matches()){
+        if (URL_HTTP_REG.matcher(urlText).matches()) {
             ItemMusicCD.SongInfo song = new ItemMusicCD.SongInfo(urlText, nameText, time, readOnlyButton.isChecked());
             ClientNetWorkHandler.sendToServer(new SetMusicIDMessage(song));
             return;
         }
-        if (URL_FILE_REG.matcher(urlText).matches()){
+        if (URL_FILE_REG.matcher(urlText).matches()) {
             File file = Paths.get(urlText).toFile();
             if (!file.isFile()) {
                 this.tips = Text.translatable("gui.netmusic.computer.url.local_file_error");
@@ -166,7 +166,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
                 ItemMusicCD.SongInfo song = new ItemMusicCD.SongInfo(url.toString(), nameText, time, readOnlyButton.isChecked());
                 ClientNetWorkHandler.sendToServer(new SetMusicIDMessage(song));
                 return;
-            }catch (MalformedURLException e){
+            } catch (MalformedURLException e) {
                 e.fillInStackTrace();
             }
         }
@@ -243,7 +243,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
             this.client.player.closeHandledScreen();
         }
         if (client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
-            if(urlTextField.isFocused() || nameTextField.isFocused() || timeTextField.isFocused()){
+            if (urlTextField.isFocused() || nameTextField.isFocused() || timeTextField.isFocused()) {
                 return true;
             }
         }
@@ -256,7 +256,7 @@ public class ComputerMenuScreen extends HandledScreen<ComputerMenu> {
             this.urlTextField.setText(text);
             this.nameTextField.setText(text);
             this.timeTextField.setText(text);
-        }else {
+        } else {
             this.urlTextField.write(text);
             this.nameTextField.write(text);
             this.timeTextField.write(text);

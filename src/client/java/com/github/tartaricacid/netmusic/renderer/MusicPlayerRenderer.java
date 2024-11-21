@@ -26,7 +26,7 @@ public class MusicPlayerRenderer implements BlockEntityRenderer<TileEntityMusicP
     public static final Identifier TEXTURE = Identifier.of(NetMusic.MOD_ID, "textures/block/music_player.png");
     public static MusicPlayerRenderer instance;
 
-    public MusicPlayerRenderer(BlockEntityRendererFactory.Context ctx){
+    public MusicPlayerRenderer(BlockEntityRendererFactory.Context ctx) {
         MODEL = new ModelMusicPlayer<>(ctx.getLayerModelPart(ModelMusicPlayer.LAYER));
         instance = this;
     }
@@ -47,7 +47,7 @@ public class MusicPlayerRenderer implements BlockEntityRenderer<TileEntityMusicP
         matrixStack.push();
         matrixStack.scale(0.75f, 0.75f, 0.75f);
         matrixStack.translate(0.5 / 0.75, 1.5, 0.5 / 0.75);
-        switch (facing){
+        switch (facing) {
             case NORTH:
             default:
                 break;

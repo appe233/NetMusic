@@ -27,13 +27,13 @@ public class GetMusicListMessageReceiver implements ClientPlayNetworking.PlayPay
                         if (player != null) {
                             player.sendMessage(Text.translatable("command.netmusic.music_cd.reload.success"));
                         }
-                    }else {
+                    } else {
                         MusicListManage.add163List(message.getMusicListId());
                         if (player != null) {
                             player.sendMessage(Text.translatable("command.netmusic.music_cd.add163.success"));
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     if (player != null) {
                         player.sendMessage(Text.translatable("command.netmusic.music_cd.add163.fail").formatted(Formatting.RED));
                     }
