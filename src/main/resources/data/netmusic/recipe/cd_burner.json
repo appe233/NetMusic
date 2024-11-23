@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shapeless",
   "result": {
-    "item": "netmusic:cd_burner"
+    "id": "netmusic:cd_burner"
   },
   "ingredients": [
     {
       "item": "minecraft:jukebox"
     },
     {
-      "tag": "forge:ingots/iron"
+      "item": "minecraft:iron_ingot"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "item": "minecraft:redstone"
     }
   ]
 }

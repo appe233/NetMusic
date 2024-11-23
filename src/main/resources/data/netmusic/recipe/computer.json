@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shapeless",
   "result": {
-    "item": "netmusic:computer"
+    "id": "netmusic:computer"
   },
   "ingredients": [
     {
       "item": "minecraft:jukebox"
     },
     {
-      "tag": "forge:ingots/gold"
+      "item": "minecraft:gold_ingot"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "item": "minecraft:redstone"
     }
   ]
 }
