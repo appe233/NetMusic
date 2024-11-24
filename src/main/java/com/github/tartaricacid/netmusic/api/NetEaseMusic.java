@@ -1,5 +1,6 @@
 package com.github.tartaricacid.netmusic.api;
 
+import com.github.tartaricacid.netmusic.config.GeneralConfig;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public class NetEaseMusic {
                 "AppleWebKit/537.36 (KHTML, like Gecko)",
                 "Chrome/81.0.4044.138",
                 "Safari/537.36"));
+        requestPropertyData.put("X-Real-IP", GeneralConfig.X_Real_IP);
     }
 
     public WebApi getApi() {
