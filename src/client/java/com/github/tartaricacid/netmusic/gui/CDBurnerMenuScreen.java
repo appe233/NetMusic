@@ -175,7 +175,7 @@ public class CDBurnerMenuScreen extends HandledScreen<CDBurnerMenu> {
             long id = Long.parseLong(textField.getText());
             try {
                 ItemMusicCD.SongInfo song = MusicListManage.get163Song(id);
-                if (StringUtils.isBlank(song.songUrl)) {
+                if (StringUtils.isBlank(song.songUrl) || StringUtils.isBlank(song.songName)) {
                     this.tips = Text.translatable("gui.netmusic.cd_burner.get_info_error");
                     return;
                 }
